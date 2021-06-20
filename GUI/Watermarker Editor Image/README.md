@@ -1,0 +1,2 @@
+Simple application with two buttons, you need to specify the path to input and output image, as well the text (watermark).
+In further it will have additional elements on the screen and functionalities.
