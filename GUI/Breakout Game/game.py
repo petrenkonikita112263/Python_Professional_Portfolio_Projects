@@ -1,4 +1,5 @@
 import pygame
+from paddle import Paddle
 
 pygame.init()
 
@@ -18,6 +19,15 @@ size = (800, 600)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Breakout Game")
 
+# create and position the paddle
+paddle = Paddle(WHITE, 100, 10)
+paddle.rect.x = 350
+paddle.rect.y = 560
+
+# list than contains all sprites for game, add paddle to this list
+all_sprites_list = pygame.sprite.Group()
+all_sprites_list.add(paddle)
+
 game_is_on = True
 clock = pygame.time.Clock()
 
@@ -28,6 +38,7 @@ while game_is_on:
             game_is_on = False
 
     # main logic of the game
+    all_sprites_list.update()
 
     # customize display
     screen.fill(DARK_BLUE)
