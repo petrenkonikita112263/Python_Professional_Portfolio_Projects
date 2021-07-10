@@ -1,5 +1,6 @@
 import pygame
 from paddle import Paddle
+from ball import Ball
 
 pygame.init()
 
@@ -24,9 +25,15 @@ paddle = Paddle(WHITE, 100, 10)
 paddle.rect.x = 350
 paddle.rect.y = 560
 
+# same with ball
+ball = Ball(WHITE, 10, 10)
+ball.rect.x = 345
+ball.rect.y = 195
+
 # list than contains all sprites for game, add paddle to this list
 all_sprites_list = pygame.sprite.Group()
 all_sprites_list.add(paddle)
+all_sprites_list.add(ball)
 
 game_is_on = True
 clock = pygame.time.Clock()
@@ -46,6 +53,23 @@ while game_is_on:
 
     # main logic of the game
     all_sprites_list.update()
+    ball.update_position()
+
+    # ball can bounce out of 4 walls(right, left, top and bottom)
+    if ball.rect.x >= 790:
+        ball.velocity[0] = -ball.velocity[0]
+    if ball.rect.x <= 0:
+        ball.velocity[0] = -ball.velocity[0]
+    if ball.rect.y > 590:
+        ball.velocity[1] = -ball.velocity[1]
+    if ball.rect.y < 40:
+        ball.velocity[1] = -ball.velocity[1]
+
+    # collision detection with paddle
+    if pygame.sprite.collide_mask(ball, paddle):
+        ball.rect.x -= ball.velocity[0]
+        ball.rect.y -= ball.velocity[1]
+        ball.bounce()
 
     # customize display
     screen.fill(DARK_BLUE)
