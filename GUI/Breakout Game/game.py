@@ -49,6 +49,9 @@ while game_is_on:
     lives_text = font.render(f"Lives left: {lives}", 1, WHITE)
     screen.blit(lives_text, (650, 10))
 
+    # draw all sprites
+    all_sprites_list.draw(screen)
+
     # update display
     pygame.display.flip()
 
