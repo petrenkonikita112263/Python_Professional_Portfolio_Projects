@@ -37,6 +37,13 @@ while game_is_on:
         if event.type == pygame.QUIT:
             game_is_on = False
 
+    # move the paddle
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        paddle.move_left(5)
+    if keys[pygame.K_RIGHT]:
+        paddle.move_right(5)
+
     # main logic of the game
     all_sprites_list.update()
 
