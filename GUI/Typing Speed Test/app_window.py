@@ -49,11 +49,12 @@ class Window:
         self.master.bind("<Return>", self.start_app)
 
     def start_app(self, event):
-        global score, miss_words
+        global score, wpm_value, miss_words
         self.time()
         if self.user_entry.get() == self.label.cget("text"):
-            score += 1
-            self.score_label.config(text=f"Your Score: {score}")
+            score += len(self.user_entry.get())
+            wpm_value = (score / 5) / 1
+            self.score_label.config(text=f"Your WPM: {wpm_value}")
         else:
             miss_words += 1
         self.label.config(text=retrieve_word(word_list))
