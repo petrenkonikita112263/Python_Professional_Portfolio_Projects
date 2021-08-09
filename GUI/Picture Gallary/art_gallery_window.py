@@ -141,6 +141,7 @@ class ArtGalleryWindow(tk.Frame):
         self.add_artist_button["state"] = "disabled"
 
     def view_all_artists(self):
+        self.clear_window()
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
             conn_cursor.execute("""SELECT * FROM Artists""")
             for row in conn_cursor.fetchall():
@@ -159,6 +160,7 @@ class ArtGalleryWindow(tk.Frame):
         self.add_art_button["state"] = "disabled"
 
     def view_all_arts(self):
+        self.clear_window()
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
             conn_cursor.execute("""SELECT * FROM Arts""")
             for row in conn_cursor.fetchall():
