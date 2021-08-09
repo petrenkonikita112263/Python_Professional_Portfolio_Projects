@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import END
+from art_gallery_db import ArtGalleryDatabase
 
 
 class ArtGalleryWindow(tk.Frame):
@@ -33,7 +34,7 @@ class ArtGalleryWindow(tk.Frame):
         self.artist_postcode = tk.Entry(text="")
         self.artist_postcode.place(x=1030, y=40, width=100, height=25)
         self.add_artist_button = tk.Button(text="Add Artist",
-                                           command="functions that add artist")
+                                           command=self.add_artist)
         self.add_artist_button.place(x=110, y=80, width=130, height=25)
         self.clear_artist_button = tk.Button(text="Clear Artist's entries",
                                              command=self.clear_artist_entries)
@@ -69,7 +70,7 @@ class ArtGalleryWindow(tk.Frame):
         self.clear_output.place(x=1020, y=200, width=155, height=25)
         """Different option to select the data from database"""
         self.get_all_artists = tk.Button(text="View All Artists",
-                                         command="function that displays all artist from table")
+                                         command=self.view_all_artists)
         self.get_all_artists.place(x=1020, y=230, width=155, height=25)
         self.get_all_arts = tk.Button(text="View All Arts",
                                       command="function that displays all art from table")
@@ -125,3 +126,20 @@ class ArtGalleryWindow(tk.Frame):
     def clear_window(self):
         """Clear the screen that displays selected data"""
         self.display_output.delete(0, END)
+
+    def add_artist(self):
+        new_name = self.artist_name.get()
+        new_address = self.artist_address.get()
+        new_town = self.artist_town.get()
+        new_country = self.artist_country.get()
+        new_postcode = self.artist_postcode.get()
+        with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
+            conn_cursor.execute("""INSERT INTO Artists (name, address, town, county, postcode)
+                VALUES (?, ?, ?, ?, ?)""", (new_name, new_address, new_town, new_country, new_postcode))
+
+    def view_all_artists(self):
+        with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
+            conn_cursor.execute("""SELECT * FROM Artists""")
+            for row in conn_cursor.fetchall():
+                data_record = f"{row[1]}, {row[2]}, {row[3]}, {row[4]}, {row[5]}\n"
+                self.display_output.insert(END, data_record)
