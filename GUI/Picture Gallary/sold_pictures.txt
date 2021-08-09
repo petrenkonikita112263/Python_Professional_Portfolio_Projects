@@ -1,0 +1,5 @@
+ArtId: 17          ArtistId: 4           Title: The old working mills            Medium: Ink          Price: 395
+ArtId: 1          ArtistId: 1           Title: African giant            Medium: Oil          Price: 800
+ArtId: 17          ArtistId: 4           Title: The old working mills            Medium: Ink          Price: 395
+ArtId: 17          ArtistId: 4           Title: The old working mills            Medium: Ink          Price: 395
+ArtId: 17          ArtistId: 4           Title: The old working mills            Medium: Ink          Price: 395
