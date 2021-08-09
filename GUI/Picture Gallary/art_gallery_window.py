@@ -60,9 +60,9 @@ class ArtGalleryWindow(tk.Frame):
         self.clear_art_button = tk.Button(text="Clear Piece",
                                           command="clear all the entries about art")
         self.clear_art_button.place(x=250, y=150, width=130, height=25)
-        """"""
+        """This area will display the selected information from database and clear it by pressing the button"""
         self.display_output = tk.Listbox()
         self.display_output.place(x=10, y=200, width=1000, height=350)
-        self.clear_output = tk.Button(text="Clear Output", command="function that clears the output info")
+        self.clear_output = tk.Button(text="Clear Output",
+                                      command="function that clears the output info")
         self.clear_output.place(x=1020, y=200, width=155, height=25)
-        
