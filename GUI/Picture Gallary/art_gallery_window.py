@@ -66,3 +66,41 @@ class ArtGalleryWindow(tk.Frame):
         self.clear_output = tk.Button(text="Clear Output",
                                       command="function that clears the output info")
         self.clear_output.place(x=1020, y=200, width=155, height=25)
+        """Different option to select the data from database"""
+        self.get_all_artists = tk.Button(text="View All Artists",
+                                         command="function that displays all artist from table")
+        self.get_all_artists.place(x=1020, y=230, width=155, height=25)
+        self.get_all_arts = tk.Button(text="View All Arts",
+                                      command="function that displays all art from table")
+        self.get_all_arts.place(x=1020, y=260, width=155, height=25)
+        """Search by artist name"""
+        self.find_artist = tk.Entry(text="")
+        self.find_artist.place(x=1020, y=300, width=50, height=25)
+        self.find_artist_button = tk.Button(text="Search by Artist",
+                                            command="function that searches info by artist name")
+        self.find_artist_button.place(x=1075, y=300, width=100, height=25)
+        """Search by type of paint grade"""
+        self.type_paint_grade = tk.StringVar(parent)
+        self.selected_paint_grade = tk.OptionMenu(parent, self.type_paint_grade, "Oil", "Watercolour", "Ink", "Acrylic")
+        self.selected_paint_grade.place(x=1020, y=330, width=100, height=25)
+        self.find_paint_grade_button = tk.Button(text="Search",
+                                                 command="function that searches info by paint's grade")
+        self.find_paint_grade_button.place(x=1125, y=330, width=50, height=25)
+        """Search by price"""
+        self.min_price_label = tk.Label(text="Min: ")
+        self.min_price_label.place(x=1020, y=360, width=75, height=25)
+        self.max_price_label = tk.Label(text="Max: ")
+        self.max_price_label.place(x=1100, y=360, width=75, height=25)
+        self.min_price_value = tk.Entry(text="")
+        self.min_price_value.place(x=1020, y=380, width=75, height=25)
+        self.max_price_value = tk.Entry(text="")
+        self.max_price_value.place(x=1100, y=380, width=75, height=25)
+        self.search_price_button = tk.Button(text="Search by Price",
+                                             command="function that searches info by prices")
+        self.search_price_button.place(x=1020, y=410, width=155, height=25)
+        """Buy the picture from the art"""
+        self.sold_price = tk.Entry(text="")
+        self.sold_price.place(x=1020, y=450, width=50, height=25)
+        self.sold_button = tk.Button(text="Sold",
+                                     command="function that sold the picture and deletes it from database")
+        self.sold_button.place(x=1075, y=450, width=100, height=25)
