@@ -79,7 +79,7 @@ class ArtGalleryWindow(tk.Frame):
         self.find_artist = tk.Entry(text="")
         self.find_artist.place(x=1020, y=300, width=50, height=25)
         self.find_artist_button = tk.Button(text="Search by Artist",
-                                            command="function that searches info by artist name")
+                                            command=self.search_by_artist)
         self.find_artist_button.place(x=1075, y=300, width=100, height=25)
         """Search by type of paint grade"""
         self.type_paint_grade = tk.StringVar(parent)
@@ -167,3 +167,15 @@ class ArtGalleryWindow(tk.Frame):
                 data_record = f"ArtId: {row[0]}          ArtistId: {row[1]}           Title: {row[2]}" \
                               f"            Medium: {row[3]}          Price: {row[4]}\n"""
                 self.display_output.insert(END, data_record)
+
+    def search_by_artist(self):
+        artist_name = self.find_artist.get()
+        with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
+            conn_cursor.execute("""SELECT pieceid, title, medium, price FROM Arts 
+            WHERE artistid = (SELECT artistid FROM Artists WHERE name = ?)""", [artist_name])
+            for row in conn_cursor.fetchall():
+                result = f"ArtId: {row[0]}           Title: {row[1]}" \
+                              f"            Medium: {row[2]}          Price: {row[3]}\n"""
+                self.display_output.insert(END, result)
+        self.find_artist.delete(0, END)
+        self.find_artist.focus()
