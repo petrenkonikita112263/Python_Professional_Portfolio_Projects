@@ -86,7 +86,7 @@ class ArtGalleryWindow(tk.Frame):
         self.selected_paint_grade = tk.OptionMenu(parent, self.type_paint_grade, "Oil", "Watercolour", "Ink", "Acrylic")
         self.selected_paint_grade.place(x=1020, y=330, width=100, height=25)
         self.find_paint_grade_button = tk.Button(text="Search",
-                                                 command="function that searches info by paint's grade")
+                                                 command=self.search_by_paint_type)
         self.find_paint_grade_button.place(x=1125, y=330, width=50, height=25)
         """Search by price"""
         self.min_price_label = tk.Label(text="Min: ")
@@ -194,3 +194,15 @@ class ArtGalleryWindow(tk.Frame):
                 self.display_output.insert(END, result)
         self.min_price_value.delete(0, END)
         self.max_price_value.delete(0, END)
+
+    def search_by_paint_type(self):
+        selected_type = self.type_paint_grade.get()
+        with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
+            conn_cursor.execute("""SELECT Arts.pieceid, Artists.name, Arts.title, Arts.medium, Arts.price 
+                                    FROM Artists, Arts 
+                                    WHERE Artists.artistid = Arts.artistid AND Arts.medium = ?""", [selected_type])
+            for row in conn_cursor.fetchall():
+                result = f"ArtId: {row[0]}           Artist name: {row[1]}          Title: {row[2]}" \
+                         f"            Medium: {row[3]}          Price: {row[4]}\n"""
+                self.display_output.insert(END, result)
+        self.type_paint_grade.set("")
