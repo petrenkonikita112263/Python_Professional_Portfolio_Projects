@@ -98,7 +98,7 @@ class ArtGalleryWindow(tk.Frame):
         self.max_price_value = tk.Entry(text="")
         self.max_price_value.place(x=1100, y=380, width=75, height=25)
         self.search_price_button = tk.Button(text="Search by Price",
-                                             command="function that searches info by prices")
+                                             command=self.search_by_price)
         self.search_price_button.place(x=1020, y=410, width=155, height=25)
         """Buy the picture from the art"""
         self.sold_price = tk.Entry(text="")
@@ -175,7 +175,22 @@ class ArtGalleryWindow(tk.Frame):
             WHERE artistid = (SELECT artistid FROM Artists WHERE name = ?)""", [artist_name])
             for row in conn_cursor.fetchall():
                 result = f"ArtId: {row[0]}           Title: {row[1]}" \
-                              f"            Medium: {row[2]}          Price: {row[3]}\n"""
+                         f"            Medium: {row[2]}          Price: {row[3]}\n"""
                 self.display_output.insert(END, result)
         self.find_artist.delete(0, END)
         self.find_artist.focus()
+
+    def search_by_price(self):
+        min_price = self.min_price_value.get()
+        max_price = self.max_price_value.get()
+        with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
+            conn_cursor.execute("""SELECT Arts.pieceid, Artists.name, Arts.title, Arts.medium, Arts.price
+                                    FROM Artists, Arts 
+                                    WHERE Artists.artistid = Arts.artistid AND 
+                                    Arts.price BETWEEN ? AND ?""", [min_price, max_price])
+            for row in conn_cursor.fetchall():
+                result = f"ArtId: {row[0]}           Artist name: {row[1]}          Title: {row[2]}" \
+                         f"            Medium: {row[3]}          Price: {row[4]}\n"""
+                self.display_output.insert(END, result)
+        self.min_price_value.delete(0, END)
+        self.max_price_value.delete(0, END)
