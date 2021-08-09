@@ -101,10 +101,10 @@ class ArtGalleryWindow(tk.Frame):
                                              command=self.search_by_price)
         self.search_price_button.place(x=1020, y=410, width=155, height=25)
         """Buy the picture from the art"""
-        self.sold_price = tk.Entry(text="")
-        self.sold_price.place(x=1020, y=450, width=50, height=25)
+        self.selected_art = tk.Entry(text="")
+        self.selected_art.place(x=1020, y=450, width=50, height=25)
         self.sold_button = tk.Button(text="Sold",
-                                     command="function that sold the picture and deletes it from database")
+                                     command=self.sold_picture)
         self.sold_button.place(x=1075, y=450, width=100, height=25)
 
     def clear_artist_entries(self):
@@ -206,3 +206,15 @@ class ArtGalleryWindow(tk.Frame):
                          f"            Medium: {row[3]}          Price: {row[4]}\n"""
                 self.display_output.insert(END, result)
         self.type_paint_grade.set("")
+
+    def sold_picture(self):
+        with open("sold_pictures.txt", "a") as file:
+            selected_picture = self.selected_art.get()
+            with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
+                conn_cursor.execute("""SELECT * FROM Arts WHERE pieceid = ?""", [selected_picture])
+                for row in conn_cursor.fetchall():
+                    data_record = f"ArtId: {row[0]}          ArtistId: {row[1]}           Title: {row[2]}" \
+                                  f"            Medium: {row[3]}          Price: {row[4]}\n"""
+                    file.write(data_record)
+                conn_cursor.execute("""DELETE FROM Arts WHERE pieceid = ?""", [selected_picture])
+        self.selected_art.delete(0, END)
