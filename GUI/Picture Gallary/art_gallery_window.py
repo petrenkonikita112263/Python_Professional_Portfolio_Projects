@@ -8,7 +8,7 @@ class ArtGalleryWindow(tk.Frame):
         """From superclass created the actual frame"""
         tk.Frame.__init__(self, parent)
         """Filling the window with labels, buttons and etc"""
-        self.info_label = tk.Label(text="Please enter the information about artist")
+        self.info_label = tk.Label(text="Please enter the information about artist and its arts")
         self.info_label.place(x=410, y=10, width=300, height=25)
         self.artist_name_label = tk.Label(text="Artist name: ")
         self.artist_name_label.place(x=30, y=40, width=80, height=25)
@@ -37,3 +37,26 @@ class ArtGalleryWindow(tk.Frame):
         self.clear_artist_button = tk.Button(text="Clear Artist's entries",
                                              command="clear all the entries about artist")
         self.clear_artist_button.place(x=250, y=80, width=130, height=25)
+        self.art_id_label = tk.Label(text="Artist ID: ")
+        self.art_id_label.place(x=30, y=120, width=80, height=25)
+        self.art_id = tk.Entry(text="")
+        self.art_id.place(x=110, y=120, width=50, height=25)
+        self.art_title_label = tk.Label(text="Title: ")
+        self.art_title_label.place(x=200, y=120, width=80, height=25)
+        self.art_title = tk.Entry(text="")
+        self.art_title.place(x=280, y=120, width=280, height=25)
+        self.paint_grade_label = tk.Label(text="Paint grade: ")
+        self.paint_grade_label.place(x=590, y=120, width=80, height=25)
+        self.paint_grade = tk.StringVar(parent)
+        self.paint_grade_option = tk.OptionMenu(parent, self.paint_grade, "Oil", "Watercolour", "Ink", "Acrylic")
+        self.paint_grade_option.place(x=670, y=120, width=100, height=25)
+        self.art_price_label = tk.Label(text="Price:")
+        self.art_price_label.place(x=770, y=120, width=80, height=25)
+        self.art_price = tk.Entry(text="")
+        self.art_price.place(x=850, y=120, width=100, height=25)
+        self.add_art_button = tk.Button(text="Add Piece",
+                                        command="functions that add art into gallery")
+        self.add_art_button.place(x=110, y=150, width=130, height=25)
+        self.clear_art_button = tk.Button(text="Clear Piece",
+                                          command="clear all the entries about art")
+        self.clear_art_button.place(x=250, y=150, width=130, height=25)
