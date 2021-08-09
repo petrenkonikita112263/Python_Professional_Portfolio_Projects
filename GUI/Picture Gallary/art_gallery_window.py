@@ -119,7 +119,7 @@ class ArtGalleryWindow(tk.Frame):
 
     def clear_art_entries(self):
         """Deletes all the input values from the entries and sets the option menu to empty string"""
-        self.art_id.delete(0, END)
+        self.artist_id.delete(0, END)
         self.art_title.delete(0, END)
         self.paint_grade.set("")
         self.art_price.delete(0, END)
