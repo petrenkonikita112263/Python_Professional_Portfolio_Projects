@@ -39,10 +39,10 @@ class ArtGalleryWindow(tk.Frame):
         self.clear_artist_button = tk.Button(text="Clear Artist's entries",
                                              command=self.clear_artist_entries)
         self.clear_artist_button.place(x=250, y=80, width=130, height=25)
-        self.art_id_label = tk.Label(text="Artist ID: ")
-        self.art_id_label.place(x=30, y=120, width=80, height=25)
-        self.art_id = tk.Entry(text="")
-        self.art_id.place(x=110, y=120, width=50, height=25)
+        self.artist_id_label = tk.Label(text="Artist ID: ")
+        self.artist_id_label.place(x=30, y=120, width=80, height=25)
+        self.artist_id = tk.Entry(text="")
+        self.artist_id.place(x=110, y=120, width=50, height=25)
         self.art_title_label = tk.Label(text="Title: ")
         self.art_title_label.place(x=200, y=120, width=80, height=25)
         self.art_title = tk.Entry(text="")
@@ -57,7 +57,7 @@ class ArtGalleryWindow(tk.Frame):
         self.art_price = tk.Entry(text="")
         self.art_price.place(x=850, y=120, width=100, height=25)
         self.add_art_button = tk.Button(text="Add Piece",
-                                        command="functions that add art into gallery")
+                                        command=self.add_art)
         self.add_art_button.place(x=110, y=150, width=130, height=25)
         self.clear_art_button = tk.Button(text="Clear Piece",
                                           command=self.clear_art_entries)
@@ -73,7 +73,7 @@ class ArtGalleryWindow(tk.Frame):
                                          command=self.view_all_artists)
         self.get_all_artists.place(x=1020, y=230, width=155, height=25)
         self.get_all_arts = tk.Button(text="View All Arts",
-                                      command="function that displays all art from table")
+                                      command=self.view_all_arts)
         self.get_all_arts.place(x=1020, y=260, width=155, height=25)
         """Search by artist name"""
         self.find_artist = tk.Entry(text="")
@@ -146,4 +146,22 @@ class ArtGalleryWindow(tk.Frame):
             for row in conn_cursor.fetchall():
                 data_record = f"ArtistId: {row[0]}          Name: {row[1]}           Address: {row[2]}" \
                               f"            Town: {row[3]}          Country: {row[4]}           Postcode: {row[5]}\n"""
+                self.display_output.insert(END, data_record)
+
+    def add_art(self):
+        new_artist_id = self.artist_id.get()
+        new_title = self.art_title.get()
+        new_paint_grade = self.paint_grade.get()
+        new_price = self.art_price.get()
+        with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
+            conn_cursor.execute("""INSERT INTO Arts (artistID, title, medium, price)
+                VALUES (?, ?, ?, ?)""", (new_artist_id, new_title, new_paint_grade, new_price))
+        self.add_art_button["state"] = "disabled"
+
+    def view_all_arts(self):
+        with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
+            conn_cursor.execute("""SELECT * FROM Arts""")
+            for row in conn_cursor.fetchall():
+                data_record = f"ArtId: {row[0]}          ArtistId: {row[1]}           Title: {row[2]}" \
+                              f"            Medium: {row[3]}          Price: {row[4]}\n"""
                 self.display_output.insert(END, data_record)
