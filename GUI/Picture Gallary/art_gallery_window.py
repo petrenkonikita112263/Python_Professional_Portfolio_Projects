@@ -141,5 +141,6 @@ class ArtGalleryWindow(tk.Frame):
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
             conn_cursor.execute("""SELECT * FROM Artists""")
             for row in conn_cursor.fetchall():
-                data_record = f"{row[1]}, {row[2]}, {row[3]}, {row[4]}, {row[5]}\n"
+                data_record = f"ArtistId: {row[0]}          Name: {row[1]}           Address: {row[2]}" \
+                              f"            Town: {row[3]}          Country: {row[4]}           Postcode: {row[5]}\n"""
                 self.display_output.insert(END, data_record)
