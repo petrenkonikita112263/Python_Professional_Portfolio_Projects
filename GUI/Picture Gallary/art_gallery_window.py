@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import END
 
 
 class ArtGalleryWindow(tk.Frame):
@@ -35,7 +36,7 @@ class ArtGalleryWindow(tk.Frame):
                                            command="functions that add artist")
         self.add_artist_button.place(x=110, y=80, width=130, height=25)
         self.clear_artist_button = tk.Button(text="Clear Artist's entries",
-                                             command="clear all the entries about artist")
+                                             command=self.clear_artist_entries)
         self.clear_artist_button.place(x=250, y=80, width=130, height=25)
         self.art_id_label = tk.Label(text="Artist ID: ")
         self.art_id_label.place(x=30, y=120, width=80, height=25)
@@ -58,13 +59,13 @@ class ArtGalleryWindow(tk.Frame):
                                         command="functions that add art into gallery")
         self.add_art_button.place(x=110, y=150, width=130, height=25)
         self.clear_art_button = tk.Button(text="Clear Piece",
-                                          command="clear all the entries about art")
+                                          command=self.clear_art_entries)
         self.clear_art_button.place(x=250, y=150, width=130, height=25)
         """This area will display the selected information from database and clear it by pressing the button"""
         self.display_output = tk.Listbox()
         self.display_output.place(x=10, y=200, width=1000, height=350)
         self.clear_output = tk.Button(text="Clear Output",
-                                      command="function that clears the output info")
+                                      command=self.clear_window)
         self.clear_output.place(x=1020, y=200, width=155, height=25)
         """Different option to select the data from database"""
         self.get_all_artists = tk.Button(text="View All Artists",
@@ -104,3 +105,23 @@ class ArtGalleryWindow(tk.Frame):
         self.sold_button = tk.Button(text="Sold",
                                      command="function that sold the picture and deletes it from database")
         self.sold_button.place(x=1075, y=450, width=100, height=25)
+
+    def clear_artist_entries(self):
+        """Deletes all the input values from the entries"""
+        self.artist_name.delete(0, END)
+        self.artist_address.delete(0, END)
+        self.artist_town.delete(0, END)
+        self.artist_country.delete(0, END)
+        self.artist_postcode.delete(0, END)
+        self.artist_name.focus()
+
+    def clear_art_entries(self):
+        """Deletes all the input values from the entries and sets the option menu to empty string"""
+        self.art_id.delete(0, END)
+        self.art_title.delete(0, END)
+        self.paint_grade.set("")
+        self.art_price.delete(0, END)
+
+    def clear_window(self):
+        """Clear the screen that displays selected data"""
+        self.display_output.delete(0, END)
