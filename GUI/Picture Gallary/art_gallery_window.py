@@ -115,6 +115,7 @@ class ArtGalleryWindow(tk.Frame):
         self.artist_country.delete(0, END)
         self.artist_postcode.delete(0, END)
         self.artist_name.focus()
+        self.add_artist_button["state"] = "normal"
 
     def clear_art_entries(self):
         """Deletes all the input values from the entries and sets the option menu to empty string"""
@@ -122,6 +123,7 @@ class ArtGalleryWindow(tk.Frame):
         self.art_title.delete(0, END)
         self.paint_grade.set("")
         self.art_price.delete(0, END)
+        self.add_art_button["state"] = "normal"
 
     def clear_window(self):
         """Clear the screen that displays selected data"""
@@ -136,6 +138,7 @@ class ArtGalleryWindow(tk.Frame):
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
             conn_cursor.execute("""INSERT INTO Artists (name, address, town, county, postcode)
                 VALUES (?, ?, ?, ?, ?)""", (new_name, new_address, new_town, new_country, new_postcode))
+        self.add_artist_button["state"] = "disabled"
 
     def view_all_artists(self):
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
