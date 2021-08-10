@@ -3,12 +3,25 @@ from tkinter import END
 from art_gallery_db import ArtGalleryDatabase
 
 
+def _create_tables(db_file):
+    """In first run creates the tables if they're not existed by custom class, otherwise skips it."""
+    with ArtGalleryDatabase(db_file) as conn_cursor:
+        conn_cursor.execute("""CREATE TABLE IF NOT EXISTS Artists(
+        artistid integer PRIMARY KEY, name text, address text, town text, county text, postcode
+        text); """)
+        conn_cursor.execute("""CREATE TABLE IF NOT EXISTS Arts(
+        pieceid integer PRIMARY KEY, artistid integer not null, title text not null, medium text not null, 
+        price integer not null);
+        """)
+
+
 class ArtGalleryWindow(tk.Frame):
     """Tkinter window"""
 
-    def __init__(self, parent):
-        """From superclass created the actual frame"""
+    def __init__(self, parent, db_file):
+        """Main constructor of the class"""
         tk.Frame.__init__(self, parent)
+
         """Filling the window with labels, buttons and etc"""
         self.info_label = tk.Label(text="Please enter the information about artist and its arts")
         self.info_label.place(x=410, y=10, width=300, height=25)
@@ -56,18 +69,20 @@ class ArtGalleryWindow(tk.Frame):
         self.art_price_label.place(x=770, y=120, width=80, height=25)
         self.art_price = tk.Entry(text="")
         self.art_price.place(x=850, y=120, width=100, height=25)
-        self.add_art_button = tk.Button(text="Add Piece",
+        self.add_art_button = tk.Button(text="Add Art",
                                         command=self.add_art)
         self.add_art_button.place(x=110, y=150, width=130, height=25)
-        self.clear_art_button = tk.Button(text="Clear Piece",
+        self.clear_art_button = tk.Button(text="Clear Art's entries",
                                           command=self.clear_art_entries)
         self.clear_art_button.place(x=250, y=150, width=130, height=25)
+
         """This area will display the selected information from database and clear it by pressing the button"""
         self.display_output = tk.Listbox()
         self.display_output.place(x=10, y=200, width=1000, height=350)
         self.clear_output = tk.Button(text="Clear Output",
                                       command=self.clear_window)
         self.clear_output.place(x=1020, y=200, width=155, height=25)
+
         """Different option to select the data from database"""
         self.get_all_artists = tk.Button(text="View All Artists",
                                          command=self.view_all_artists)
@@ -75,12 +90,14 @@ class ArtGalleryWindow(tk.Frame):
         self.get_all_arts = tk.Button(text="View All Arts",
                                       command=self.view_all_arts)
         self.get_all_arts.place(x=1020, y=260, width=155, height=25)
+
         """Search by artist name"""
         self.find_artist = tk.Entry(text="")
         self.find_artist.place(x=1020, y=300, width=50, height=25)
         self.find_artist_button = tk.Button(text="Search by Artist",
                                             command=self.search_by_artist)
         self.find_artist_button.place(x=1075, y=300, width=100, height=25)
+
         """Search by type of paint grade"""
         self.type_paint_grade = tk.StringVar(parent)
         self.selected_paint_grade = tk.OptionMenu(parent, self.type_paint_grade, "Oil", "Watercolour", "Ink", "Acrylic")
@@ -88,6 +105,7 @@ class ArtGalleryWindow(tk.Frame):
         self.find_paint_grade_button = tk.Button(text="Search",
                                                  command=self.search_by_paint_type)
         self.find_paint_grade_button.place(x=1125, y=330, width=50, height=25)
+
         """Search by price"""
         self.min_price_label = tk.Label(text="Min: ")
         self.min_price_label.place(x=1020, y=360, width=75, height=25)
@@ -100,12 +118,16 @@ class ArtGalleryWindow(tk.Frame):
         self.search_price_button = tk.Button(text="Search by Price",
                                              command=self.search_by_price)
         self.search_price_button.place(x=1020, y=410, width=155, height=25)
+
         """Buy the picture from the art"""
         self.selected_art = tk.Entry(text="")
         self.selected_art.place(x=1020, y=450, width=50, height=25)
         self.sold_button = tk.Button(text="Sold",
                                      command=self.sold_picture)
         self.sold_button.place(x=1075, y=450, width=100, height=25)
+
+        """Create the tables"""
+        _create_tables(db_file)
 
     def clear_artist_entries(self):
         """Deletes all the input values from the entries"""
@@ -130,6 +152,7 @@ class ArtGalleryWindow(tk.Frame):
         self.display_output.delete(0, END)
 
     def add_artist(self):
+        """User adds new artist into db"""
         new_name = self.artist_name.get()
         new_address = self.artist_address.get()
         new_town = self.artist_town.get()
@@ -141,6 +164,7 @@ class ArtGalleryWindow(tk.Frame):
         self.add_artist_button["state"] = "disabled"
 
     def view_all_artists(self):
+        """Prints the Artists table into window"""
         self.clear_window()
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
             conn_cursor.execute("""SELECT * FROM Artists""")
@@ -150,6 +174,7 @@ class ArtGalleryWindow(tk.Frame):
                 self.display_output.insert(END, data_record)
 
     def add_art(self):
+        """User adds new art into db"""
         new_artist_id = self.artist_id.get()
         new_title = self.art_title.get()
         new_paint_grade = self.paint_grade.get()
@@ -160,6 +185,7 @@ class ArtGalleryWindow(tk.Frame):
         self.add_art_button["state"] = "disabled"
 
     def view_all_arts(self):
+        """Prints the Arts table into window"""
         self.clear_window()
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
             conn_cursor.execute("""SELECT * FROM Arts""")
@@ -169,10 +195,11 @@ class ArtGalleryWindow(tk.Frame):
                 self.display_output.insert(END, data_record)
 
     def search_by_artist(self):
+        """User enters the artist name to view all his|her arts."""
         artist_name = self.find_artist.get()
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
             conn_cursor.execute("""SELECT pieceid, title, medium, price FROM Arts 
-            WHERE artistid = (SELECT artistid FROM Artists WHERE name = ?)""", [artist_name])
+            WHERE artistid = (SELECT artistid FROM Artists WHERE name LIKE ?)""", [artist_name])
             for row in conn_cursor.fetchall():
                 result = f"ArtId: {row[0]}           Title: {row[1]}" \
                          f"            Medium: {row[2]}          Price: {row[3]}\n"""
@@ -181,6 +208,7 @@ class ArtGalleryWindow(tk.Frame):
         self.find_artist.focus()
 
     def search_by_price(self):
+        """User sets the low and high price and finds out what pictures get under this range"""
         min_price = self.min_price_value.get()
         max_price = self.max_price_value.get()
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
@@ -196,6 +224,8 @@ class ArtGalleryWindow(tk.Frame):
         self.max_price_value.delete(0, END)
 
     def search_by_paint_type(self):
+        """From list menu the user chooses the type of paint's grade and finds what pictures
+        are in db with this grade"""
         selected_type = self.type_paint_grade.get()
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
             conn_cursor.execute("""SELECT Arts.pieceid, Artists.name, Arts.title, Arts.medium, Arts.price 
@@ -208,6 +238,7 @@ class ArtGalleryWindow(tk.Frame):
         self.type_paint_grade.set("")
 
     def sold_picture(self):
+        """By entering the art id, the selected pictures stores into file and deleted from db"""
         with open("sold_pictures.txt", "a") as file:
             selected_picture = self.selected_art.get()
             with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
