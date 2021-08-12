@@ -3,8 +3,8 @@ from tkinter import END
 from art_gallery_db import ArtGalleryDatabase
 
 
-def _create_tables(db_file):
-    """In first run creates the tables if they're not existed by custom class, otherwise skips it."""
+def _create_tables(db_file: str) -> None:
+    """ In first run creates the tables if they're not existed by custom class, otherwise skips its creation. """
     with ArtGalleryDatabase(db_file) as conn_cursor:
         conn_cursor.execute("""CREATE TABLE IF NOT EXISTS Artists(
         artistid integer PRIMARY KEY, name text, address text, town text, county text, postcode
@@ -16,10 +16,14 @@ def _create_tables(db_file):
 
 
 class ArtGalleryWindow(tk.Frame):
-    """Tkinter window"""
+    """ The class that is responsible for displaying the window and running methods. """
 
-    def __init__(self, parent, db_file):
-        """Main constructor of the class"""
+    def __init__(self, parent, db_file: str):
+        """
+        Initialize the ArtGalleryWindow class with a current object of the root window and database file.
+        :param parent: a widget that acts as the parent of the current object
+        :param db_file: database file
+        """
         tk.Frame.__init__(self, parent)
 
         """Filling the window with labels, buttons and etc"""
@@ -129,8 +133,11 @@ class ArtGalleryWindow(tk.Frame):
         """Create the tables"""
         _create_tables(db_file)
 
-    def clear_artist_entries(self):
-        """Deletes all the input values from the entries"""
+    def clear_artist_entries(self) -> None:
+        """
+        Deletes all the input values from the artist's entries.
+        :return: None
+        """
         self.artist_name.delete(0, END)
         self.artist_address.delete(0, END)
         self.artist_town.delete(0, END)
@@ -139,20 +146,29 @@ class ArtGalleryWindow(tk.Frame):
         self.artist_name.focus()
         self.add_artist_button["state"] = "normal"
 
-    def clear_art_entries(self):
-        """Deletes all the input values from the entries and sets the option menu to empty string"""
+    def clear_art_entries(self) -> None:
+        """
+        Deletes all the input values from the art's entries and sets the option menu to empty string.
+        :return: None
+        """
         self.artist_id.delete(0, END)
         self.art_title.delete(0, END)
         self.paint_grade.set("")
         self.art_price.delete(0, END)
         self.add_art_button["state"] = "normal"
 
-    def clear_window(self):
-        """Clear the screen that displays selected data"""
+    def clear_window(self) -> None:
+        """
+        Method that clears the screen that displays selected data.
+        :return: None
+        """
         self.display_output.delete(0, END)
 
-    def add_artist(self):
-        """User adds new artist into db"""
+    def add_artist(self) -> None:
+        """
+        Method that allows user to add the new artist into db.
+        :return: None
+        """
         new_name = self.artist_name.get()
         new_address = self.artist_address.get()
         new_town = self.artist_town.get()
@@ -163,8 +179,11 @@ class ArtGalleryWindow(tk.Frame):
                 VALUES (?, ?, ?, ?, ?)""", (new_name, new_address, new_town, new_country, new_postcode))
         self.add_artist_button["state"] = "disabled"
 
-    def view_all_artists(self):
-        """Prints the Artists table into window"""
+    def view_all_artists(self) -> None:
+        """
+        Prints the Artists table into window.
+        :return: None
+        """
         self.clear_window()
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
             conn_cursor.execute("""SELECT * FROM Artists""")
@@ -173,7 +192,11 @@ class ArtGalleryWindow(tk.Frame):
                               f"            Town: {row[3]}          Country: {row[4]}           Postcode: {row[5]}\n"""
                 self.display_output.insert(END, data_record)
 
-    def add_art(self):
+    def add_art(self) -> None:
+        """
+        Method that allows user to add the new art into db.
+        :return: None
+        """
         """User adds new art into db"""
         new_artist_id = self.artist_id.get()
         new_title = self.art_title.get()
@@ -184,8 +207,11 @@ class ArtGalleryWindow(tk.Frame):
                 VALUES (?, ?, ?, ?)""", (new_artist_id, new_title, new_paint_grade, new_price))
         self.add_art_button["state"] = "disabled"
 
-    def view_all_arts(self):
-        """Prints the Arts table into window"""
+    def view_all_arts(self) -> None:
+        """
+        Prints the Arts table into window.
+        :return: None
+        """
         self.clear_window()
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
             conn_cursor.execute("""SELECT * FROM Arts""")
@@ -195,7 +221,10 @@ class ArtGalleryWindow(tk.Frame):
                 self.display_output.insert(END, data_record)
 
     def search_by_artist(self):
-        """User enters the artist name to view all his|her arts."""
+        """
+        User enters the artist name to view all his|her arts.
+        :return: None
+        """
         artist_name = self.find_artist.get()
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
             conn_cursor.execute("""SELECT pieceid, title, medium, price FROM Arts 
@@ -207,8 +236,11 @@ class ArtGalleryWindow(tk.Frame):
         self.find_artist.delete(0, END)
         self.find_artist.focus()
 
-    def search_by_price(self):
-        """User sets the low and high price and finds out what pictures get under this range"""
+    def search_by_price(self) -> None:
+        """
+        User sets the low and high price and finds out what pictures get under this range.
+        :return: None
+        """
         min_price = self.min_price_value.get()
         max_price = self.max_price_value.get()
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
@@ -223,9 +255,12 @@ class ArtGalleryWindow(tk.Frame):
         self.min_price_value.delete(0, END)
         self.max_price_value.delete(0, END)
 
-    def search_by_paint_type(self):
-        """From list menu the user chooses the type of paint's grade and finds what pictures
-        are in db with this grade"""
+    def search_by_paint_type(self) -> None:
+        """
+        From list menu the user chooses the type of paint's grade and finds what pictures
+        are in db with this grade.
+        :return: None
+        """
         selected_type = self.type_paint_grade.get()
         with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
             conn_cursor.execute("""SELECT Arts.pieceid, Artists.name, Arts.title, Arts.medium, Arts.price 
@@ -237,8 +272,11 @@ class ArtGalleryWindow(tk.Frame):
                 self.display_output.insert(END, result)
         self.type_paint_grade.set("")
 
-    def sold_picture(self):
-        """By entering the art id, the selected pictures stores into file and deleted from db"""
+    def sold_picture(self) -> None:
+        """
+        By entering the art id, the selected pictures stores into file and deleted from db.
+        :return: None
+        """
         with open("sold_pictures.txt", "a") as file:
             selected_picture = self.selected_art.get()
             with ArtGalleryDatabase("art_gallery.db") as conn_cursor:
