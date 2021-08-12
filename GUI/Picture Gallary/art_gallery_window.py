@@ -62,7 +62,7 @@ class ArtGalleryWindow(tk.Frame):
         # TODO 1: Replaced getting artist id from user's enter by option menu from database.
         self.artist_id = tk.Entry(text="")
         self.artist_id.place(x=110, y=120, width=50, height=25)
-        
+
         self.art_title_label = tk.Label(text="Title: ")
         self.art_title_label.place(x=200, y=120, width=80, height=25)
         self.art_title = tk.Entry(text="")
@@ -200,7 +200,6 @@ class ArtGalleryWindow(tk.Frame):
         Method that allows user to add the new art into db.
         :return: None
         """
-        """User adds new art into db"""
         new_artist_id = self.artist_id.get()
         new_title = self.art_title.get()
         new_paint_grade = self.paint_grade.get()
