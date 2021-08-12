@@ -58,8 +58,11 @@ class ArtGalleryWindow(tk.Frame):
         self.clear_artist_button.place(x=250, y=80, width=130, height=25)
         self.artist_id_label = tk.Label(text="Artist ID: ")
         self.artist_id_label.place(x=30, y=120, width=80, height=25)
+
+        # TODO 1: Replaced getting artist id from user's enter by option menu from database.
         self.artist_id = tk.Entry(text="")
         self.artist_id.place(x=110, y=120, width=50, height=25)
+        
         self.art_title_label = tk.Label(text="Title: ")
         self.art_title_label.place(x=200, y=120, width=80, height=25)
         self.art_title = tk.Entry(text="")
