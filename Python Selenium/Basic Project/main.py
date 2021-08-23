@@ -5,3 +5,5 @@ TEST_URL = r"https://www.seleniumeasy.com/test/jquery-download-progress-bar-demo
 
 driver = webdriver.Edge(DRIVER_PATH)
 driver.get(TEST_URL)
+button = driver.find_element_by_id("downloadButton")
+button.click()
