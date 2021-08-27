@@ -18,3 +18,6 @@ sum_2 = driver.find_element_by_id("sum2")
 
 sum_1.send_keys(Keys.NUMPAD1, Keys.NUMPAD5)
 sum_2.send_keys(Keys.NUMPAD1, Keys.NUMPAD5)
+
+button = driver.find_element_by_css_selector("button[onclick='return total()']")
+button.click()
