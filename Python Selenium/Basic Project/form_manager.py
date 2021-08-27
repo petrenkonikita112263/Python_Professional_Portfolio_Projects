@@ -8,3 +8,9 @@ driver.get(URL_LINK)
 driver.implicitly_wait(20)
 close_button = driver.find_element_by_id("at-cv-lightbox-close")
 close_button.click()
+
+sum_1 = driver.find_element_by_id("sum1")
+sum_2 = driver.find_element_by_id("sum2")
+
+sum_1.send_keys(15)
+sum_2.send_keys(15)
