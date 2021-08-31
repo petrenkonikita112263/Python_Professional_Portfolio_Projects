@@ -27,3 +27,13 @@ class Booking():
             f"a[data-modal-header-async-url-param*='selected_currency={currency}']"
         )
         selected_currency_element.click()
+
+    def fill_place_name(self, place_to_go):
+        """Sending the place name to the input field."""
+        input_place_field = self.browser.find_element_by_id("ss")
+        input_place_field.clear()
+        input_place_field.send_keys(place_to_go)
+        first_result = self.browser.find_element_by_css_selector(
+            "li[data-i='0']"
+        )
+        first_result.click()
