@@ -48,3 +48,26 @@ class Booking():
             f"td[data-date='{check_out_date}']"
         )
         check_out_element.click()
+
+    def select_adult_human(self, quantity=1):
+        """Select the adult number in the field."""
+        selection_element = self.browser.find_element_by_id("xp__guests__toggle")
+        selection_element.click()
+
+        # set the adult number to 1
+        while True:
+            default_adult_number = self.browser.find_element_by_css_selector(
+                "button[aria-label='Дорослі: зменшити кількість']"
+            )
+            default_adult_number.click()
+            adult_number_element = self.browser.find_element_by_id("group_adults")
+            adult_number = adult_number_element.get_attribute("value")
+            if int(adult_number) == 1:
+                break
+        add_adult_element = self.browser.find_element_by_css_selector(
+            "button[aria-label='Дорослі: збільшити кількість']"
+        )
+
+        # increase the adult number to the input number
+        for _ in range(quantity - 1):
+            add_adult_element.click()
