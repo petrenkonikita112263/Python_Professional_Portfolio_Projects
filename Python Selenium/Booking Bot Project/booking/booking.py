@@ -37,3 +37,14 @@ class Booking():
             "li[data-i='0']"
         )
         first_result.click()
+
+    def select_dates(self, check_in_date, check_out_date):
+        """Select the two days from calendars."""
+        check_in_element = self.browser.find_element_by_css_selector(
+            f"td[data-date='{check_in_date}']"
+        )
+        check_in_element.click()
+        check_out_element = self.browser.find_element_by_css_selector(
+            f"td[data-date='{check_out_date}']"
+        )
+        check_out_element.click()
