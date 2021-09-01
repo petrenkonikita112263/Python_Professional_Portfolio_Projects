@@ -71,3 +71,10 @@ class Booking():
         # increase the adult number to the input number
         for _ in range(quantity - 1):
             add_adult_element.click()
+
+    def search_info(self):
+        """CLick the button on the main page."""
+        search_button = self.browser.find_element_by_css_selector(
+            "button[type='submit']"
+        )
+        search_button.click()
