@@ -78,3 +78,7 @@ class Booking():
             "button[type='submit']"
         )
         search_button.click()
+
+    def apply_filtrations(self):
+        """Using another class that filters information."""
+        BookingFiltration()
