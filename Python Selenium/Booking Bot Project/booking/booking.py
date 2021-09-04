@@ -2,6 +2,7 @@ import os
 
 from selenium import webdriver
 from . import constants as const
+from .booking_filtration import BookingFiltration
 
 
 class Booking():
@@ -81,4 +82,7 @@ class Booking():
 
     def apply_filtrations(self):
         """Using another class that filters information."""
-        BookingFiltration()
+        filtration = BookingFiltration(driver=self.browser)
+        filtration.apply_star_rating()
+        filtration.sort_by_most_user_ratings()
+        filtration.apply_walking()
