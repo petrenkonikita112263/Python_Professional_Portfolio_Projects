@@ -4,6 +4,9 @@ In this Django project that called 'business'. It has app landing. Inside landin
 image. And in parent folder static holds the css style file. After running it's only display a bit styled text with logo
 image on main page.
 
+Also the command `python manage.py collectstatic` was run that collected all static files for production in
+static_production_test.
+
 ## Prerequisite
 
 To get started with the project files, you'll need to:
