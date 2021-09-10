@@ -1,6 +1,5 @@
-import os
+from msedge.selenium_tools import Edge, EdgeOptions
 
-from selenium import webdriver
 from . import constants as const
 from .booking_filtration import BookingFiltration
 
@@ -9,7 +8,10 @@ class Booking():
 
     def __init__(self, driver_path=const.DRIVER_PATH):
         """Constructor of the class"""
-        self.browser = webdriver.Edge(driver_path)
+        options = EdgeOptions()
+        options.add_experimental_option("excludeSwitches", ["enable-logging"])
+        options.use_chromium = True
+        self.browser = Edge(driver_path, options=options)
         self.browser.implicitly_wait(20)
         self.browser.maximize_window()
 
