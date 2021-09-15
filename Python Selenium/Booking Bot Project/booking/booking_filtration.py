@@ -1,10 +1,10 @@
-from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
 
 
 class BookingFiltration:
     """Class that filter information by hotel stars and prices."""
 
-    def __init__(self, driver: WebDriver) -> None:
+    def __init__(self, driver: WebElement) -> None:
         self.driver = driver
 
     def apply_star_rating(self, star_value=3):

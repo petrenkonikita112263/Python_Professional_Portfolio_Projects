@@ -1,7 +1,10 @@
+from selenium.webdriver.remote.webelement import WebElement
+
+
 class BookingReport:
     """Class with method that will parse the hotel list from html page."""
 
-    def __init__(self, boxes_section_element):
+    def __init__(self, boxes_section_element: WebElement):
         self.boxes_section_element = boxes_section_element
         self.deal_boxes = self.pull_deal_boxes()
 
