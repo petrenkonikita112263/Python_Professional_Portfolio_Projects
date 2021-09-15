@@ -88,3 +88,7 @@ class Booking():
         filtration.apply_star_rating()
         filtration.sort_by_most_user_ratings()
         filtration.apply_walking()
+
+    def report_result(self):
+        """Print the results of hotels from 1st page."""
+        pass
