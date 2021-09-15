@@ -13,3 +13,11 @@ class BookingReport:
         return self.boxes_section_element.find_elements_by_class_name(
             "sr_property_block"
         )
+
+    def pull_titles(self):
+        """From deal_boxes list grab each title of hotels."""
+        for deal_box in self.deal_boxes:
+            hotel_title = deal_box.find_element_by_class_name(
+                "sr-hotel__name"
+            ).get_attribute("innerHTML").strip()
+            print(hotel_title)
