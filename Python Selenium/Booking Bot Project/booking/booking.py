@@ -91,4 +91,9 @@ class Booking():
 
     def report_result(self):
         """Print the results of hotels from 1st page."""
-        pass
+        hotel_boxes = self.browser.find_element_by_id(
+            "hotellist_inner"
+        ).find_elements_by_class_name(
+            "sr_property_block"
+        )
+        return hotel_boxes
