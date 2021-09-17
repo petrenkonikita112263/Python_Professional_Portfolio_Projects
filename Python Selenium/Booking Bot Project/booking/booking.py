@@ -1,4 +1,5 @@
 from msedge.selenium_tools import Edge, EdgeOptions
+from prettytable import PrettyTable
 
 from . import constants as const
 from .booking_filtration import BookingFiltration
@@ -96,3 +97,8 @@ class Booking():
             "hotellist_inner"
         )
         booking_report = BookingReport(hotel_boxes)
+        table = PrettyTable(
+            field_names=["Hotel Name", "Hotel Price", "Hotel Score"]
+        )
+        table.add_rows(booking_report.pull_deal_box_attributes())
+        print(table)
