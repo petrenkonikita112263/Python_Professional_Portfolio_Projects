@@ -6,11 +6,13 @@ def main():
     booking_instance.get_home_page()
     # this line can be run once, to change the currency value, by sending the currency type to it
     # booking_instance.change_currency()
-    booking_instance.fill_place_name("Київ")
-    booking_instance.select_dates("2021-09-10", "2021-09-19")
-    booking_instance.select_adult_human()
+    booking_instance.fill_place_name(input("Куди їдемо? "))
+    booking_instance.select_dates(input("Дата приїзду (наприклад 2021-01-01) "),
+                                  input("Дата виїзду (наприклад 2021-01-01 "))
+    booking_instance.select_adult_human(int(input("Кількість осіб ")))
     booking_instance.search_info()
-    booking_instance.apply_filtrations()
+    # booking_instance.apply_filtrations()
+    booking_instance.report_result()
 
 
 if __name__ == "__main__":
