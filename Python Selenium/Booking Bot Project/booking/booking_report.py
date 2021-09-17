@@ -29,9 +29,9 @@ class BookingReport:
             hotel_title = deal_box.find_element_by_class_name(
                 "sr-hotel__name"
             ).get_attribute("innerHTML").strip()
-            hotel_price = deal_box.find_element_by_class_name(
-                "bui-price-display__value"
-            ).get_attribute("innerHTML").strip()
+            hotel_price = deal_box.find_element_by_xpath(
+                '//*[@id="hotellist_inner"]/div[1]/div[2]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/div/div/span'
+            ).get_attribute("innerHTML").strip().replace("&nbsp;", " ")
             hotel_rating = deal_box.get_attribute("data-score").strip()
             hotel_collection.append(
                 [hotel_title, hotel_price, hotel_rating]
