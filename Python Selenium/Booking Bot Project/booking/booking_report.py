@@ -21,3 +21,7 @@ class BookingReport:
                 "sr-hotel__name"
             ).get_attribute("innerHTML").strip()
             print(hotel_title)
+
+    def pull_deal_box_attributes(self):
+        """From deal_boxes grab hotel title, its price, rating(score) and save it to the list."""
+        pass
