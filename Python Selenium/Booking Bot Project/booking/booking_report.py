@@ -24,4 +24,16 @@ class BookingReport:
 
     def pull_deal_box_attributes(self):
         """From deal_boxes grab hotel title, its price, rating(score) and save it to the list."""
-        pass
+        hotel_collection = []
+        for deal_box in self.deal_boxes:
+            hotel_title = deal_box.find_element_by_class_name(
+                "sr-hotel__name"
+            ).get_attribute("innerHTML").strip()
+            hotel_price = deal_box.find_element_by_class_name(
+                "bui-price-display__value"
+            ).get_attribute("innerHTML").strip()
+            hotel_rating = deal_box.get_attribute("data-score").strip()
+            hotel_collection.append(
+                [hotel_title, hotel_price, hotel_rating]
+            )
+        return hotel_collection
